@@ -56,7 +56,7 @@ def Get_Video_Info(URL: str, id):
     with yt_dlp.YoutubeDL(playlist.YTDL_OPTIONS[id]) as ydl:
         try:
             info = ydl.extract_info(URL, download=False)
-            title = str(info['title']).encode("utf-8")
+            title = str(info['title'])
             print_info(f"Mendapatkan Video Info dari {title}")
 
             return info
@@ -176,7 +176,7 @@ async def skip(ctx: commands.Context):
     if not (ctx.author.voice):
         raise commands.UserNotFound
     
-    if songData.queueIndex[id] >= len(songData.musicQueue[id]) -1:
+    if songData.queueIndex[id] >= len(songData.musicQueue[id]) -2:
         try:
             playlist.playlistStart[id] += 3
             playlist.playlistEnd[id] += 3
@@ -191,6 +191,16 @@ async def skip(ctx: commands.Context):
                         "url": inf["url"]
                     }
                     songData.musicQueue[id].append(data)
+            songData.queueIndex[id] += 1
+            source = FFmpegPCMAudio(songData.musicQueue[id][songData.queueIndex[id]]["url"], **FFMPEG_OPTIONS)
+            songData.vc[id].stop()
+            songData.vc[id].play(source)
+
+            title = songData.musicQueue[id][songData.queueIndex[id]]["title"]
+            embed = discord.Embed(title='[Info]', 
+                                description=f":fast_forward: Playing ```{title}```" ,
+                                color=discord.Color.blue())
+            await ctx.send(embed=embed)
         except:
             songData.vc[id].stop()
             embed = discord.Embed(title='[Info]', 
@@ -206,7 +216,7 @@ async def skip(ctx: commands.Context):
 
         title = songData.musicQueue[id][songData.queueIndex[id]]["title"]
         embed = discord.Embed(title='[Info]', 
-                                description=f":fast_forward: Playing {title}" ,
+                                description=f":fast_forward: Playing ```{title}```" ,
                                 color=discord.Color.blue())
         await ctx.send(embed=embed)
 
@@ -344,7 +354,7 @@ async def previous(ctx: commands.Context):
 
         title = songData.musicQueue[id][songData.queueIndex[id]]["title"]
         embed = discord.Embed(title='[Info]', 
-                                description=f":rewind: Playing {title}" ,
+                                description=f":rewind: Playing ```{title}```" ,
                                 color=discord.Color.blue())
         await ctx.send(embed=embed)
 
