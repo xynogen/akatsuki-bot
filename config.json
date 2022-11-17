@@ -1,0 +1,18 @@
+{
+    "DISCORD": {
+        "TOKEN": "[TOKEN_HERE]",
+        "PREFIX": "!"
+    },
+    "APP": {
+        "YTDL_OPTIONS" : {
+            "format": "m4a/bestaudio/best", 
+            "nonplaylist": "True",
+            "playliststart": "1",
+            "playlistend": "3"
+        },
+        "FFMPEG_OPTIONS" : {
+            "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5", 
+            "options": "-vn"
+        }
+    }
+}
