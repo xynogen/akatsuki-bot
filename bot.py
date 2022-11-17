@@ -250,7 +250,7 @@ async def autoplay(ctx: commands.Context):
             await asyncio.sleep(10)
             pass
         else:
-            if songData.queueIndex[id] < len(songData.musicQueue[id]) -1:
+            if songData.queueIndex[id] < len(songData.musicQueue[id]) -1 or playlist.isPlaylist[id]:
                 await skip(ctx)
             else:
                 songData.autoplay[id] = False
